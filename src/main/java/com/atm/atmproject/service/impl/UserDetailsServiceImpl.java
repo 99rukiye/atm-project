@@ -1,4 +1,5 @@
 package com.atm.atmproject.service.impl;
+import org.springframework.security.authentication.LockedException;
 
 import com.atm.atmproject.entity.User;
 import com.atm.atmproject.repository.UserRepository;
@@ -21,10 +22,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Kullanıcı bulunamadı: " + username));
 
+        // Kullanıcı bloke olmuşsa giriş yapamasın
+        if (user.isLocked()) {
+            throw new LockedException("Hesabınız bloke olmuştur.");
+        }
+
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
+                user.getEmail(),
                 user.getPassword(),
                 new ArrayList<>()
         );
     }
+
 }
