@@ -5,6 +5,15 @@ import com.atm.atmproject.dto.UserRegisterRequestDTO;
 import com.atm.atmproject.entity.User;
 
 public interface UserService {
-    User register(UserRegisterRequestDTO dto);
-    User login(LoginRequestDTO dto);
+    User register(UserRegisterRequestDTO dto);       // Zaten vardı
+    User login(LoginRequestDTO dto);                 // Zaten vardı
+
+    User getUserById(Long id);
+    User getUserByEmail(String email);
+
+    void updateBalance(Long userId, Double amount);
+    void updateBalanceByEmail(String email, Double amount);
+
+    boolean withdrawByEmail(String email, Double amount);
+    boolean transferMoney(String senderEmail, String receiverEmail, Double amount);
 }
