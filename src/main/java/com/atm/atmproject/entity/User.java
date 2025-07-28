@@ -16,6 +16,11 @@ public class User {
     @JoinColumn(name = "admin_id") // foreign key olacak sütun
     private Admin admin;
 
+    public String getUsername() {
+        return this.email;
+    }
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
