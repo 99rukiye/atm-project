@@ -10,8 +10,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.atm.atmproject.service.TransactionService;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +19,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TransactionService transactionService;
+
 
     @Override
     public User register(UserRegisterRequestDTO dto) {
@@ -55,6 +57,13 @@ public class UserServiceImpl implements UserService {
         User user = getUserById(userId);
         user.setBalance(user.getBalance() + amount);
         userRepository.save(user);
+
+        transactionService.saveTransaction(
+                "DEPOSIT",
+                amount,
+                "Para yatırma işlemi",
+                user
+        );
     }
 
     @Override
@@ -62,6 +71,13 @@ public class UserServiceImpl implements UserService {
         User user = getUserByEmail(email);
         user.setBalance(user.getBalance() + amount);
         userRepository.save(user);
+
+        transactionService.saveTransaction(
+                "DEPOSIT",
+                amount,
+                "E-posta ile para yatırma",
+                user
+        );
     }
 
     @Override
@@ -70,6 +86,14 @@ public class UserServiceImpl implements UserService {
         if (user.getBalance() >= amount) {
             user.setBalance(user.getBalance() - amount);
             userRepository.save(user);
+
+            transactionService.saveTransaction(
+                    "WITHDRAW",
+                    amount,
+                    "Para çekme işlemi",
+                    user
+            );
+
             return true;
         }
         return false;
@@ -86,6 +110,14 @@ public class UserServiceImpl implements UserService {
             receiver.setBalance(receiver.getBalance() + amount);
             userRepository.save(sender);
             userRepository.save(receiver);
+
+            transactionService.saveTransaction(
+                    "TRANSFER",
+                    amount,
+                    "Havale - Gönderen: " + senderEmail + ", Alıcı: " + receiverEmail,
+                    sender
+            );
+
             return true;
         }
         return false;
