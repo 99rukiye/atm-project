@@ -28,7 +28,8 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()  // Kayıt & giriş açık
+                        .requestMatchers("/api/auth/**").permitAll()
+                        // Kayıt & giriş açık
                         .anyRequest().authenticated()            // Diğer her şey giriş ister
                 )
                 .httpBasic(Customizer.withDefaults());       // Basic Auth kullan
