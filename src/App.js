@@ -1,12 +1,19 @@
+// App.js
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Login from './components/Login'; // Buradaki import bu haliyle doğru
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from './components/Login';
+import Dashboard from './components/Dashboard';
 
+console.log("Login:", Login);
+console.log("Dashboard:", Dashboard);
 function App() {
   return (
-    <div className="App">
-      <Login />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
