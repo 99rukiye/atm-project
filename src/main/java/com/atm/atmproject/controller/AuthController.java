@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-
+@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -38,7 +38,7 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody @Valid LoginRequestDTO request) {
+    public ResponseEntity<?> login(@RequestBody @Valid LoginRequestDTO request) {
         logger.info("Login attempt for email: {}", request.getEmail());
 
         try {
@@ -53,7 +53,16 @@ public class AuthController {
             userRepository.save(user);
 
             logger.info("Login successful for user: {}", user.getEmail());
-            return ResponseEntity.ok("Giriş başarılı");
+
+            // Burada kullanıcı bilgilerini frontend'e dön
+            return ResponseEntity.ok(
+                    java.util.Map.of(
+                            "message", "Login successful",
+                            "fullName", user.getFullName(),
+                            "email", user.getEmail(),
+                            "role", user.getRole().name()
+                    )
+            );
 
         } catch (BadCredentialsException e) {
             logger.warn("Bad credentials for email: {}", request.getEmail());
@@ -71,9 +80,11 @@ public class AuthController {
                 userRepository.save(user);
             }
 
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Hatalı giriş");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(java.util.Map.of("message", "Hatalı giriş"));
         }
     }
+
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody @Valid UserRegisterRequestDTO dto) {
