@@ -1,5 +1,3 @@
-// src/main/java/com/atm/atmproject/entity/Admin.java
-
 package com.atm.atmproject.entity;
 
 import jakarta.persistence.*;
