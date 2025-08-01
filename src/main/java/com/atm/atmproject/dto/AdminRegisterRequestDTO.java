@@ -1,5 +1,3 @@
-// src/main/java/com/atm/atmproject/dto/AdminRegisterRequestDTO.java
-
 package com.atm.atmproject.dto;
 
 import jakarta.validation.constraints.Email;
