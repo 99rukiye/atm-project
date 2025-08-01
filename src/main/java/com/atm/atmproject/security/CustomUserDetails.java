@@ -28,26 +28,26 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return user.getEmail(); // email ile login olacak
+        return user.getEmail();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // Süresi dolmamış hesap
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return !user.isLocked(); // kilitli değilse true döner
+        return !user.isLocked();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // şifre süresi dolmamış
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return true; // aktif kullanıcı
+        return true;
     }
 }
