@@ -5,7 +5,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "transactions") // <-- Doğru yer burası
+@Table(name = "transactions")
 @Data
 @Builder
 @NoArgsConstructor
