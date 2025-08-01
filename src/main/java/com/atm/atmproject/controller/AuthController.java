@@ -25,6 +25,9 @@ public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
+
+
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -54,7 +57,7 @@ public class AuthController {
 
             logger.info("Login successful for user: {}", user.getEmail());
 
-            // Burada kullanıcı bilgilerini frontend'e dön
+
             return ResponseEntity.ok(
                     java.util.Map.of(
                             "message", "Login successful",
