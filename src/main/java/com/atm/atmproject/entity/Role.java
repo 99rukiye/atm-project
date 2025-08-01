@@ -13,7 +13,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name; // ROLE_ADMIN or ROLE_USER
+    private String name;
 
     // getter-setter
 }
