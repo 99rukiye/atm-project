@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:sqlserver://localhost:1433;databaseName=atmdb;encrypt=false
     username: sa
-    password: your_password
+    password: sql123
   jpa:
     hibernate:
       ddl-auto: update
