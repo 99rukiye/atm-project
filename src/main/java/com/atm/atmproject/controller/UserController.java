@@ -1,15 +1,24 @@
 package com.atm.atmproject.controller;
 
 import com.atm.atmproject.entity.User;
+import com.atm.atmproject.repository.UserRepository;
 import com.atm.atmproject.service.UserService;
+
 import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -17,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final UserRepository userRepository;
 
     private final UserService userService;
 
@@ -28,13 +38,31 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    // 2. Para yatırma
     @PostMapping("/deposit")
-    public ResponseEntity<String> deposit(@AuthenticationPrincipal UserDetails userDetails,
-                                          @RequestParam Double amount) {
-        logger.info("Deposit request - User: {}, Amount: {}", userDetails.getUsername(), amount);
-        userService.updateBalanceByEmail(userDetails.getUsername(), amount);
-        return ResponseEntity.ok("Para yatırma başarılı.");
+    public ResponseEntity<?> deposit(@RequestBody Map<String, Object> request) {
+        try {
+            String email = (String) request.get("email");
+            Double amount = Double.parseDouble(request.get("amount").toString());
+
+            Optional<User> optionalUser = userRepository.findByEmail(email);
+            if (optionalUser.isEmpty()) {
+                logger.warn("Kullanıcı bulunamadı: {}", email);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Kullanıcı bulunamadı");
+            }
+
+            User user = optionalUser.get();
+            Double currentBalance = user.getBalance() != null ? user.getBalance() : 0.0;
+            user.setBalance(currentBalance + amount);
+            userRepository.save(user);
+
+            logger.info("{} kullanıcısı {} TL yatırdı.", email, amount);
+            return ResponseEntity.ok(amount + " TL başarıyla yatırıldı.");
+
+        } catch (Exception e) {
+            logger.error("Para yatırma hatası: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Bir hata oluştu: " + e.getMessage());
+        }
     }
 
     // 3. Para çekme
