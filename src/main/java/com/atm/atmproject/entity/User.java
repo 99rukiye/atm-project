@@ -3,18 +3,18 @@ package com.atm.atmproject.entity;
 import com.atm.atmproject.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
+public class User  {
 
     @ManyToOne
-    @JoinColumn(name = "admin_id") // foreign key olacak sütun
+    @JoinColumn(name = "admin_id")
     private Admin admin;
 
     public String getUsername() {
@@ -34,16 +34,20 @@ public class User {
 
     private String password;
 
-    private Double balance;
+    @Column(nullable = false)
+    private Double balance = 0.0;
+    @Column(name = "login_attempt")
+    private int loginAttempt = 0;
 
-    private int loginAttempt;
+    @Column(name = "is_blocked")
+    private boolean isBlocked = false;
+
+
+  
 
     private boolean locked;
 
     @Enumerated(EnumType.STRING)
     private Role role;
-// src/main/java/com/atm/atmproject/entity/User.java
-
-
 
 }
