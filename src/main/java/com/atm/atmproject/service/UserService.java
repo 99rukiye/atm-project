@@ -5,8 +5,8 @@ import com.atm.atmproject.dto.UserRegisterRequestDTO;
 import com.atm.atmproject.entity.User;
 
 public interface UserService {
-    User register(UserRegisterRequestDTO dto);       // Zaten vardı
-    User login(LoginRequestDTO dto);                 // Zaten vardı
+    User register(UserRegisterRequestDTO dto);
+    User login(LoginRequestDTO dto);
 
     User getUserById(Long id);
     User getUserByEmail(String email);
