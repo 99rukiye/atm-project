@@ -9,5 +9,5 @@ public class RegisterRequest {
     private String fullName;
     private String email;
     private String password;
-    private Long adminId; // Hangi admin'e bağlı olduğu
+    private Long adminId;
 }
