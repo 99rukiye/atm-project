@@ -1,5 +1,3 @@
-// src/main/java/com/atm/atmproject/repository/AdminRepository.java
-
 package com.atm.atmproject.repository;
 
 import com.atm.atmproject.entity.Admin;
