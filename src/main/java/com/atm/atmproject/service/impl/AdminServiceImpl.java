@@ -1,5 +1,3 @@
-// src/main/java/com/atm/atmproject/service/impl/AdminServiceImpl.java
-
 package com.atm.atmproject.service.impl;
 
 import com.atm.atmproject.dto.AdminRegisterRequestDTO;
