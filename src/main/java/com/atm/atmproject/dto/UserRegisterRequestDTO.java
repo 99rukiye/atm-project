@@ -18,5 +18,5 @@ public class UserRegisterRequestDTO {
     @NotBlank(message = "Şifre boş olamaz")
     private String password;
 
-    private Role role; // USER veya ADMIN olarak seçilmeli
+    private Role role;
 }
